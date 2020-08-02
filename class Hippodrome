@@ -1,0 +1,77 @@
+import java.util.Arrays;
+import java.util.List;
+
+/*
+JavaRush. Java Multithreading. Уровень 22. Лекция 16 (2113)
+
+Hippodrome (Ипподром)
+*/
+
+public class Hippodrome {
+    public static Hippodrome game;
+    private List<Horse> horses;
+
+    public Hippodrome(List<Horse> horses) {
+        this.horses = horses;
+    }
+
+    public List<Horse> getHorses() {
+        return horses;
+    }
+
+    public void run() {
+        for (int i =0; i < 100; i++){
+            move();
+            print();
+
+            try {
+                Thread.sleep(200);
+            }
+            catch (InterruptedException e) {
+            }
+        }
+    }
+
+    public void move() {
+        for (Horse horse : horses) {
+            horse.move();
+        }
+    }
+
+    public void print() {
+        for (Horse horse : horses) {
+            horse.print();
+        }
+
+        for (int i = 0; i < 10; i++) {
+            System.out.println();
+        }
+    }
+
+    public Horse getWinner() {
+        Horse horseWinner = horses.get(0);
+        double max = 0.0;
+
+        for (Horse horse : horses) {
+            if (horse.getDistance() > max) {
+                max = horse.getDistance();
+                horseWinner = horse;
+            }
+        }
+
+        return horseWinner;
+    }
+
+    public void printWinner() {
+        System.out.println("Winner is " + getWinner().getName() + "!");
+    }
+
+    public static void main(String[] args) {
+        game = new Hippodrome(Arrays.asList(new Horse("Vas", 3, 0),
+                new Horse("Slava", 3, 0),
+                new Horse("Georg", 3, 0)));
+
+        game.run();
+        game.printWinner();
+    }
+}
